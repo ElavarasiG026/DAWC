@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh 'docker build -t devops-website .'
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Stop existing container if running
+                    sh 'docker rm -f devops-website-container || true'
+                    // Run new container
+                    sh 'docker run -d -p 8080:8080 --name devops-website-container devops-website'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Website deployed successfully! Access at http://localhost:8080'
+        }
+        failure {
+            echo 'Something went wrong!'
+        }
+    }
+}
