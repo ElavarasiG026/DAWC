@@ -4,8 +4,8 @@ FROM nginx:alpine
 # Step 2: Copy website files to Nginx default folder
 COPY . /usr/share/nginx/html
 
-# Step 3: Expose port 8080
-EXPOSE 8080
+# Step 3: Expose port 80 (Nginx default)
+EXPOSE 80
 
 # Step 4: Run Nginx
 CMD ["nginx", "-g", "daemon off;"]
