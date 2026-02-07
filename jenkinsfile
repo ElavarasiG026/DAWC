@@ -2,24 +2,23 @@ pipeline {
     agent any
 
     stages {
+
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Build Docker image
-                    sh 'docker build -t devops-website .'
-                }
+                bat 'docker build -t devops-website .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                script {
-                    // Stop and remove existing container if running
-                    sh 'docker rm -f devops-website-container || true'
-
-                    // Run new container
-                    sh 'docker run -d -p 8080:80 --name devops-website-container devops-website'
-                }
+                bat 'docker rm -f devops-website-container || exit 0'
+                bat 'docker run -d -p 8080:80 --name devops-website-container devops-website'
             }
         }
     }
@@ -27,10 +26,10 @@ pipeline {
     post {
         success {
             echo 'Website deployed successfully!'
-            echo 'Access at: http://localhost:8080'
+            echo 'Open http://localhost:8080'
         }
         failure {
-            echo '❌ Pipeline failed. Please check logs.'
+            echo '❌ Pipeline failed'
         }
     }
 }
