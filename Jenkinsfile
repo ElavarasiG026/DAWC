@@ -18,7 +18,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 bat 'docker rm -f devops-website-container || exit 0'
-                bat 'docker run -d -p 8080:80 --name devops-website-container devops-website'
+                bat 'docker run -d -p 8080:81 --name devops-website-container devops-website'
             }
         }
     }
